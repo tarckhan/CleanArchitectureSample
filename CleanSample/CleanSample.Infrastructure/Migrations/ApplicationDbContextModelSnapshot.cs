@@ -47,6 +47,10 @@ namespace CleanSample.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AdditionalInfo")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -61,15 +65,12 @@ namespace CleanSample.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("TeamId1")
+                    b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamId1");
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Players");
                 });
@@ -100,7 +101,9 @@ namespace CleanSample.Infrastructure.Migrations
                 {
                     b.HasOne("CleanSample.Domain.Entities.Team", "Team")
                         .WithMany("Players")
-                        .HasForeignKey("TeamId1");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Team");
                 });

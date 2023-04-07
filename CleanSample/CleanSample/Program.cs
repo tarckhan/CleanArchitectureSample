@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using CleanSample.Infrastructure.Database;
 using Microsoft.Extensions.Configuration;
 using CleanSample.Infrastructure;
+using CleanSample.Infrastructure.SeedDatabase;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    DbInitializer.SeedDatabase(app);
 }
 
 app.UseHttpsRedirection();

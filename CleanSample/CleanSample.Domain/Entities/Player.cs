@@ -15,11 +15,14 @@ namespace CleanSample.Domain.Entities
         public string Firstname { get; set; }
         [MaxLength(200)]
         public string Lastname { get; set; }
-        public int TeamId { get; set; }
+        public Guid TeamId { get; set; }
         public DateTime BirthDate { get; set; }
         
         [Range(0, 99)]
         public byte JerseyNumber { get; set; }
         public virtual Team Team { get; set; }
+        
+        [MaxLength(400)]
+        public string AdditionalInfo { get; set; }
     }
 }

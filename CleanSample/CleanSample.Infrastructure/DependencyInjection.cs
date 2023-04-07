@@ -1,5 +1,7 @@
 ﻿using CleanSample.Application.Interfaces;
+using CleanSample.Domain.Entities;
 using CleanSample.Infrastructure.Database;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,5 +18,7 @@ namespace CleanSample.Infrastructure
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             return services;
         }
+
+        
     }
 }

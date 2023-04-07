@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanSample.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230407212847_initial")]
-    partial class initial
+    [Migration("20230407221512_AddedExtraInfo")]
+    partial class AddedExtraInfo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,10 +32,12 @@ namespace CleanSample.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DivisionCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -48,25 +50,30 @@ namespace CleanSample.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
+                    b.Property<string>("AdditionalInfo")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Firstname")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<byte>("JerseyNumber")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("Lastname")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Players");
                 });
@@ -88,7 +95,39 @@ namespace CleanSample.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DivisionId");
+
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("CleanSample.Domain.Entities.Player", b =>
+                {
+                    b.HasOne("CleanSample.Domain.Entities.Team", "Team")
+                        .WithMany("Players")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("CleanSample.Domain.Entities.Team", b =>
+                {
+                    b.HasOne("CleanSample.Domain.Entities.Division", null)
+                        .WithMany("Teams")
+                        .HasForeignKey("DivisionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanSample.Domain.Entities.Division", b =>
+                {
+                    b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("CleanSample.Domain.Entities.Team", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }
