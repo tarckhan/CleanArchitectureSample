@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CleanSample.Application.Interfaces.Services;
+using CleanSample.Application.Models.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,23 @@ namespace CleanSample.Controllers
     [ApiController]
     public class PlayersController : ControllerBase
     {
+        private readonly IPlayerService _playerService;
+
+        public PlayersController(IPlayerService playerService)
+        {
+            _playerService = playerService;
+        }
 
         [HttpGet]
-        public async Task Get() => Ok();
+        public async Task<List<PlayerDto>> GetAll() => await _playerService.GetAllPlayers();
+
+        [HttpPost]
+        public async Task<bool> Add([FromBody] AddPlayerDto playerDto) => await _playerService.AddPlayer(playerDto);
+        
+        [HttpPut]
+        public async Task<bool> UpdatePlayer([FromBody] PlayerDto playerDto) => await _playerService.UpdatePlayer(playerDto);
+
+        [HttpDelete]
+        public async Task<bool> DeletePlayer([FromBody] Guid id) => await _playerService.DeletePlayer(id);
     }
 }

@@ -13,6 +13,6 @@ namespace CleanSample.Application.Interfaces
         DbSet<Player> Players { get; set; }
         DbSet<Team> Teams { get; set; }
         DbSet<Division> Divisions { get; set; }
-        Task SaveChangesAsync();
+        Task<int> SaveChangesAsync();
     }
 }

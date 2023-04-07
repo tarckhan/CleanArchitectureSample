@@ -18,9 +18,9 @@ namespace CleanSample.Infrastructure.Database
         public DbSet<Team> Teams { get; set; }
         public DbSet<Division> Divisions { get; set; }
 
-        public async Task SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            await base.SaveChangesAsync();
+            return await base.SaveChangesAsync();
         }
     }
 }
