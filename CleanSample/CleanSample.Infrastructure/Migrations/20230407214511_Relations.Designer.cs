@@ -4,6 +4,7 @@ using CleanSample.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanSample.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230407214511_Relations")]
+    partial class Relations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,11 +101,9 @@ namespace CleanSample.Infrastructure.Migrations
 
             modelBuilder.Entity("CleanSample.Domain.Entities.Player", b =>
                 {
-                    b.HasOne("CleanSample.Domain.Entities.Team", "Team")
+                    b.HasOne("CleanSample.Domain.Entities.Team", null)
                         .WithMany("Players")
                         .HasForeignKey("TeamId1");
-
-                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("CleanSample.Domain.Entities.Team", b =>

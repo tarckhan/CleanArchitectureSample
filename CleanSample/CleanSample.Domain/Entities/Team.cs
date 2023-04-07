@@ -12,5 +12,6 @@ namespace CleanSample.Domain.Entities
         public string Name { get; set; }
         public Guid DivisionId { get; set; }
         public string AdditionalInfo { get; set; }
+        public virtual ICollection<Player> Players { get; set; }
     }
 }
