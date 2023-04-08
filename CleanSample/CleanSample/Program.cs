@@ -6,6 +6,7 @@ using CleanSample.Infrastructure.Database;
 using Microsoft.Extensions.Configuration;
 using CleanSample.Infrastructure;
 using CleanSample.Infrastructure.SeedDatabase;
+using CleanSample.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ if (app.Environment.IsDevelopment())
     DbInitializer.SeedDatabase(app);
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

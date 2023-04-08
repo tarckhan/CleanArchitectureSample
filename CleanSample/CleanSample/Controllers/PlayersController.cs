@@ -1,4 +1,5 @@
-﻿using CleanSample.Application.Interfaces.Services;
+﻿using CleanSample.Application.ApiResult;
+using CleanSample.Application.Interfaces.Services;
 using CleanSample.Application.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,15 +22,29 @@ namespace CleanSample.Controllers
         }
 
         [HttpGet]
-        public async Task<List<PlayerDto>> GetAll() => await _playerService.GetAllPlayers();
+        public async Task<ApiResult<List<PlayerDto>>> GetAll()
+        {
+            var result = await _playerService.GetAllPlayers();
+            return ApiResult<List<PlayerDto>>.OK(result);
+        }
 
         [HttpPost]
-        public async Task<bool> Add([FromBody] AddPlayerDto playerDto) => await _playerService.AddPlayer(playerDto);
-        
+        public async Task<ApiResult<bool>> Add([FromBody] AddPlayerDto playerDto)
+        {
+            var result = await _playerService.AddPlayer(playerDto);
+            return ApiResult<bool>.OK(result);
+        }
         [HttpPut]
-        public async Task<bool> UpdatePlayer([FromBody] PlayerDto playerDto) => await _playerService.UpdatePlayer(playerDto);
-
+        public async Task<ApiResult<bool>> UpdatePlayer([FromBody] PlayerDto playerDto)
+        {
+            var result = await _playerService.UpdatePlayer(playerDto);
+            return ApiResult<bool>.OK(result);
+        }
         [HttpDelete]
-        public async Task<bool> DeletePlayer([FromBody] Guid id) => await _playerService.DeletePlayer(id);
+        public async Task<ApiResult<bool>> DeletePlayer([FromBody] Guid id)
+        {
+            var result = await _playerService.DeletePlayer(id);
+            return ApiResult<bool>.OK(result);
+        }
     }
 }

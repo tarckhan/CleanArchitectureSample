@@ -9,5 +9,6 @@ namespace CleanSample.Application
 {
     public static class DependencyInjection
     {
+
     }
 }

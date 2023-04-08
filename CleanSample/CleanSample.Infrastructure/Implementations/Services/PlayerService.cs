@@ -1,4 +1,5 @@
-﻿using CleanSample.Application.Interfaces;
+﻿using CleanSample.Application.CustomExceptions;
+using CleanSample.Application.Interfaces;
 using CleanSample.Application.Interfaces.Services;
 using CleanSample.Application.Models.DTOs;
 using CleanSample.Domain.Entities;
@@ -25,7 +26,7 @@ namespace CleanSample.Infrastructure.Implementations.Services
 
             if (team is null)
             {
-                throw new ArgumentException("Invalid TeamId!");
+                throw new ObjectNotFoundException("Invalid TeamId!");
             }
 
             var playerToAdd = new Player()
@@ -47,14 +48,14 @@ namespace CleanSample.Infrastructure.Implementations.Services
         {
             if (string.IsNullOrEmpty(Id.ToString()))
             {
-                throw new ArgumentException("Invalid Guid");
+                throw new InvalidInputException("Invalid Guid");
             }
 
             var player = await _dbContext.Players.FirstOrDefaultAsync(player => player.Id == Id);
 
             if (player is null)
             {
-                throw new KeyNotFoundException($"Player with Id: {Id} not found!");
+                throw new ObjectNotFoundException($"Player with Id: {Id} not found!");
             }
 
             _dbContext.Players.Remove(player);
@@ -78,23 +79,23 @@ namespace CleanSample.Infrastructure.Implementations.Services
 
         public async Task<bool> UpdatePlayer(PlayerDto playerToUpdate)
         {
-            if (playerToUpdate is null || string.IsNullOrEmpty(playerToUpdate.Id.ToString()))
+            if (playerToUpdate is null || playerToUpdate.Id == Guid.Empty)
             {
-                throw new ArgumentException("Invalid Guid");
+                throw new InvalidInputException("Invalid Guid");
             }
 
             var player = await _dbContext.Players.FirstOrDefaultAsync(player => player.Id == playerToUpdate.Id);
 
             if (player is null)
             {
-                throw new KeyNotFoundException($"Player with Id: {playerToUpdate.Id} not found!");
+                throw new ObjectNotFoundException($"Player with Id: {playerToUpdate.Id} not found!");
             }
 
             var team = await _dbContext.Teams.FirstOrDefaultAsync(team => team.Id == playerToUpdate.TeamId);
 
             if (team is null)
             {
-                throw new KeyNotFoundException($"Team with Id: {playerToUpdate.TeamId} not found!");
+                throw new ObjectNotFoundException($"Team with Id: {playerToUpdate.TeamId} not found!");
             }
 
             player.Id = playerToUpdate.Id;
