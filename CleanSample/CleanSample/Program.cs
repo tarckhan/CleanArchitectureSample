@@ -7,10 +7,15 @@ using Microsoft.Extensions.Configuration;
 using CleanSample.Infrastructure;
 using CleanSample.Infrastructure.SeedDatabase;
 using CleanSample.Middlewares;
+using Microsoft.AspNetCore.OData;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddOData(options =>
+{
+    options.Filter().OrderBy().Select().Expand().Count();
+});
+
 builder.Services.AddInfrastructureIoC();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,6 +35,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
